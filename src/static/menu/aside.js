@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 11:49:09
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-09 14:55:02
+ * @LastEditTime: 2024-04-09 23:51:23
  * @filePath: Do not edit
  */
 const aside = [
@@ -25,17 +25,18 @@ const aside = [
         child: []
       },
       {
+        title: '跳蚤市场轮播',
+        path: '/image/store',
+        icon: 'Goods',
+        child: []
+      },
+      {
         title: '首页弹窗公告',
         path: '/image/notify',
         icon: 'Notification',
         child: []
       },
-      {
-        title: '跳蚤市场轮播',
-        path: '/image/store',
-        icon: 'Goods',
-        child: []
-      }
+
     ]
   },
   {
@@ -43,15 +44,10 @@ const aside = [
     path: '/list',
     icon: 'List',
     child: [
-      {
-        title: '取餐点列表',
-        path: '/goods/list',
-        icon: 'Guide',
-        child: []
-      },
+
       {
         title: '配送点列表',
-        path: '/goods/add',
+        path: '/list/address',
         icon: 'Van',
         child: []
       }
