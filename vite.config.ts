@@ -1,3 +1,10 @@
+/*
+ * @Author: FengXue
+ * @Date: 2024-04-08 17:41:43
+ * @LastEditors: FengXue
+ * @LastEditTime: 2024-04-09 09:48:15
+ * @filePath: Do not edit
+ */
 import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
@@ -37,6 +44,10 @@ export default defineConfig({
           enabledCollections: ['ep'],
         })
       ],
+
     }),
+    Icons({
+      autoInstall: true,
+    })
   ],
 })
