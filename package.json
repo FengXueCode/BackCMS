@@ -13,6 +13,8 @@
     "axios": "^1.6.7",
     "element-plus": "^2.5.5",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "qs": "^6.12.0",
     "unplugin-icons": "^0.18.3",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"

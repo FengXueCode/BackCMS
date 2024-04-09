@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-08 17:41:43
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-09 09:48:15
+ * @LastEditTime: 2024-04-09 13:50:22
  * @filePath: Do not edit
  */
 import { defineConfig } from 'vite'
@@ -30,9 +30,9 @@ export default defineConfig({
         //自动导入ElementPlus 相关函数
         ElementPlusResolver(),
         //自动导入图标组件
-        IconsResolver({
-          prefix: "Icon",
-        })
+        // IconsResolver({
+        //   prefix: "Icon",
+        // })
       ],
     }),
     Components({
@@ -40,14 +40,14 @@ export default defineConfig({
         // 自动导入ElementPlus组件
         ElementPlusResolver(),
         // 自动注册图标组件
-        IconsResolver({
-          enabledCollections: ['ep'],
-        })
+        // IconsResolver({
+        //   enabledCollections: ['ep'],
+        // })
       ],
 
     }),
-    Icons({
-      autoInstall: true,
-    })
+    // Icons({
+    //   autoInstall: true,
+    // })
   ],
 })
