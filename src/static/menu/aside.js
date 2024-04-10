@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 11:49:09
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-09 23:51:23
+ * @LastEditTime: 2024-04-10 11:34:22
  * @filePath: Do not edit
  */
 const aside = [
@@ -30,13 +30,6 @@ const aside = [
         icon: 'Goods',
         child: []
       },
-      {
-        title: '首页弹窗公告',
-        path: '/image/notify',
-        icon: 'Notification',
-        child: []
-      },
-
     ]
   },
   {
@@ -47,7 +40,7 @@ const aside = [
 
       {
         title: '配送点列表',
-        path: '/list/address',
+        path: '/list/delivery',
         icon: 'Van',
         child: []
       }
@@ -55,7 +48,7 @@ const aside = [
   },
   {
     title: '权限管理',
-    path: '/order',
+    path: '/jurisdiction',
     icon: 'Avatar',
     child: [
       {
@@ -67,7 +60,7 @@ const aside = [
       },
       {
         title: '用户审核',
-        path: '/order/add',
+        path: '/jurisdiction/userAudit',
         icon: 'Stamp',
         child: []
       }

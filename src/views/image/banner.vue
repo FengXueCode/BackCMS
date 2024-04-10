@@ -91,17 +91,4 @@ onMounted(() => {
   });
 });
 </script>
-<style lang="scss" scoped>
-.init {
-  padding: 10px;
-}
-
-.title {
-  font-size: 18px;
-}
-.tip {
-  margin-top: 8px;
-  font-size: 14px;
-  color: grey;
-}
-</style>
+<style lang="scss" scoped></style>
