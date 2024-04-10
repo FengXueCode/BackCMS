@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 23:50:32
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-10 13:34:00
+ * @LastEditTime: 2024-04-10 22:08:37
  * @filePath: Do not edit
 -->
 <template>
@@ -19,9 +19,27 @@
       >
         <el-option label="认证中" value="1"> </el-option>
         <el-option label="已认证" value="2"> </el-option>
+        <el-option label="已驳回" value="-1"> </el-option>
       </el-select>
 
-      <el-button type="primary" @click="pass">批量通过</el-button>
+      <el-popconfirm
+        :title="'是否确认通过' + checkList.length + '项数据?'"
+        confirmButtonText="确认"
+        cancelButtonText="取消"
+        confirmButtonType="primary"
+        cancelButtonType="text"
+        icon="el-icon-question"
+        iconColor="#f90"
+        hideIcon="false"
+        @confirm="handleBatchPass"
+      >
+        <template #reference>
+          <el-button type="primary" size="default" @click=""
+            >批量通过</el-button
+          >
+        </template>
+      </el-popconfirm>
+
       <el-popconfirm
         :title="'是否确认驳回' + checkList.length + '项数据?'"
         confirmButtonText="确认"
@@ -31,7 +49,7 @@
         icon="el-icon-question"
         iconColor="#f90"
         hideIcon="false"
-        @confirm="handleBatchDelete"
+        @confirm="handleBatchRefuse"
       >
         <template #reference>
           <el-button type="danger" size="default" @click="">批量驳回</el-button>
@@ -45,7 +63,11 @@
           style="width: 100%"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            type="selection"
+            width="55"
+            :selectable="handleDisable"
+          ></el-table-column>
           <el-table-column label="序号" width="80" align="center">
             <template #default="scope">
               {{ scope.$index + 1 }}
@@ -73,6 +95,7 @@
             <template #default="scope">
               <el-image
                 style="width: 100px; height: 100px"
+                @click="showImg(scope.row, true)"
                 :src="scope.row.studentCard"
                 fit="cover"
               ></el-image>
@@ -86,6 +109,7 @@
             <template #default="scope">
               <el-image
                 style="width: 100px; height: 100px"
+                @click="showImg(scope.row, false)"
                 :src="scope.row.inHand"
                 fit="cover"
               ></el-image>
@@ -106,6 +130,9 @@
               <span v-if="scope.row.studentVerification == 2" class="green"
                 >已认证</span
               >
+              <span v-if="scope.row.studentVerification == -1" class="green"
+                >已驳回</span
+              >
             </template>
           </el-table-column>
           <el-table-column prop="" label="操作" width="200" align="center">
@@ -114,7 +141,7 @@
                 <el-button
                   type="primary"
                   size="mini"
-                  @click="handleEdit(scope.row)"
+                  @click="handlePass(scope.row)"
                   >通过</el-button
                 >
                 <el-popconfirm
@@ -126,7 +153,7 @@
                   icon="el-icon-question"
                   iconColor="#f90"
                   hideIcon="false"
-                  @confirm="handleDelete(scope.row)"
+                  @confirm="handleRefuse(scope.row)"
                 >
                   <template #reference>
                     <el-button type="danger" size="mini" @click=""
@@ -139,6 +166,14 @@
           </el-table-column>
         </el-table>
       </el-scrollbar>
+      <el-dialog v-model="dialogVisible">
+        <img
+          w-full
+          :src="dialogImageUrl"
+          alt="Preview Image"
+          style="width: 100%"
+        />
+      </el-dialog>
     </div>
 
     <!-- 分页 -->
@@ -190,6 +225,17 @@ import Axios from "../../request";
 onMounted(() => {
   getList();
 });
+//显示图片
+const dialogVisible = ref(false);
+const dialogImageUrl = ref("");
+const showImg = (row: any, flag: boolean) => {
+  dialogVisible.value = true;
+  if (flag) {
+    dialogImageUrl.value = row.studentCard;
+  } else {
+    dialogImageUrl.value = row.inHand;
+  }
+};
 const tableData = ref([]); //表格数据
 const checkList = ref([]); //已选择数据
 const page = ref({
@@ -234,71 +280,52 @@ const rules = reactive<FormRules<Delivery>>({
 });
 //监听选择
 const handleSelectionChange = (val: any) => {
-  console.log("🚀 ~ handleSelectionChange ~ val:", val);
   checkList.value = val;
 };
 const isEdit = ref(false);
 //新增
 
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  await formEl.validate((valid) => {
-    if (valid) {
-      if (isChange) {
-        Axios({
-          url: import.meta.env.VITE_BASE_URL + "/cms/updateDelivery",
-          method: "POST",
-          data: delivery.value,
-        }).then((res) => {
-          if (res.data.code == 200) {
-            isEdit.value = false;
-            isChange.value = false;
-            ElMessage.success("保存成功");
-            getList();
-          }
-        });
-      }
-      Axios({
-        url: import.meta.env.VITE_BASE_URL + "/cms/saveDelivery",
-        method: "POST",
-        data: delivery.value,
-      }).then((res) => {
-        if (res.data.code == 200) {
-          isEdit.value = false;
-          ElMessage.success("保存成功");
-          getList();
-        }
-      });
-    } else {
-      return false;
-    }
-  });
+const handleDisable = (row: any) => {
+  return row.studentVerification == 1 ? true : false;
 };
-const isChange = ref(false);
-const handleEdit = (row: any) => {
-  console.log("handleEdit", row);
-  isEdit.value = true;
-  delivery.value = row;
-  isChange.value = true;
-};
-const handleBatchDelete = () => {
-  console.log("handleBatchDelete");
+const handleBatchPass = () => {
   if (checkList.value.length == 0) {
-    ElMessage.warning("请选择要删除的数据");
+    ElMessage.warning("请选择要通过的数据");
     return;
   }
-  handleDelete(checkList.value);
+  handlePass(checkList.value);
 };
-const handleDelete = (row: any) => {
+
+const handlePass = (row: any) => {
   row = row instanceof Array ? row : [row];
   Axios({
-    url: import.meta.env.VITE_BASE_URL + "/cms/delDeliveryById",
+    url: import.meta.env.VITE_BASE_URL + "/cms/pass",
     method: "POST",
     data: row,
   }).then((res) => {
-    console.log("🚀 ~ handleDelete ~ res:", res);
     if (res.data.code == 200) {
-      ElMessage.success("删除成功");
+      ElMessage.success("通过成功");
+      getList();
+    }
+  });
+};
+
+const handleBatchRefuse = () => {
+  if (checkList.value.length == 0) {
+    ElMessage.warning("请选择要驳回的数据");
+    return;
+  }
+  handleRefuse(checkList.value);
+};
+const handleRefuse = (row: any) => {
+  row = row instanceof Array ? row : [row];
+  Axios({
+    url: import.meta.env.VITE_BASE_URL + "/cms/refuse",
+    method: "POST",
+    data: row,
+  }).then((res) => {
+    if (res.data.code == 200) {
+      ElMessage.success("驳回成功");
       getList();
     }
   });
