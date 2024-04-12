@@ -2,30 +2,15 @@
  * @Author: FengXue
  * @Date: 2024-04-09 23:50:32
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-12 17:32:22
+ * @LastEditTime: 2024-04-12 17:33:56
  * @filePath: Do not edit
 -->
 <template>
   <div class="init">
-    <div class="title">配送点列表</div>
+    <div class="title">区域范围列表</div>
     <el-divider direction="horizontal" content-position="left"></el-divider>
     <div class="function-nav">
-      <el-select
-        v-model="filters.areaName"
-        placeholder="配送范围"
-        clearable
-        style="width: 150px; margin-right: 10px"
-        @change="getDeliveryList"
-      >
-        <el-option
-          v-for="item in areaList"
-          :label="item.areaName"
-          :value="item.areaName"
-          :key="item.areaId"
-        >
-        </el-option>
-      </el-select>
-      <el-button type="primary" @click="addDelivery">添加配送点</el-button>
+      <el-button type="primary" @click="addArea">添加范围</el-button>
       <el-popconfirm
         :title="'是否确认删除' + checkList.length + '项数据?'"
         confirmButtonText="确认"
@@ -55,14 +40,10 @@
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
+
           <el-table-column
             prop="areaName"
-            label="区域名称"
-            width="auto"
-          ></el-table-column>
-          <el-table-column
-            prop="deliveryName"
-            label="配送点名称"
+            label="范围名称"
             width="auto"
           ></el-table-column>
           <el-table-column prop="" width="200">
@@ -112,43 +93,26 @@
     </div>
     <!-- 编辑 -->
     <el-dialog
-      title="新增配送点"
+      title="新增范围"
       v-model="isEdit"
       width="50%"
       :show-close="false"
       :close-on-click-modal="false"
     >
       <el-form
-        :model="delivery"
-        ref="deliveryForm"
+        :model="area"
+        ref="areaForm"
         :rules="rules"
         label-width="100px"
         :inline="false"
         size="normal"
       >
-        <el-form-item label="配送范围" prop="areaName" size="normal">
-          <el-select
-            v-model="delivery.areaName"
-            placeholder="请选择配送范围"
-            clearable
-            style="width: 150px; margin-right: 10px"
-          >
-            <el-option
-              v-for="item in areaList"
-              :label="item.areaName"
-              :value="item.areaName"
-              :key="item.areaId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="配送点名称" prop="deliveryName">
-          <el-input v-model="delivery.deliveryName" clearable></el-input>
+        <el-form-item label="范围名称" prop="areaName">
+          <el-input v-model="area.areaName" clearable></el-input>
         </el-form-item>
         <el-form-item label="" size="normal">
           <el-button @click="isEdit = false">取消</el-button>
-          <el-button type="primary" @click="submitForm(deliveryForm)"
+          <el-button type="primary" @click="submitForm(areaForm)"
             >保存</el-button
           >
         </el-form-item>
@@ -161,23 +125,9 @@
 import { ElMessage, FormInstance, FormRules } from "element-plus";
 import { onMounted, reactive } from "vue";
 import Axios from "../../request";
-import { removeStyle } from "element-plus/es/utils/index.mjs";
 onMounted(() => {
   getAreaList();
-  getDeliveryList();
 });
-const filters = {
-  areaName: "",
-};
-const areaList = ref([]); //范围列表
-/**获取范围列表 */
-const getAreaList = () => {
-  Axios({
-    url: import.meta.env.VITE_BASE_URL + "/cms/findArea",
-  }).then((res) => {
-    areaList.value = res.data;
-  });
-};
 const tableData = ref([]); //表格数据
 const checkList = ref([]); //已选择数据
 const page = ref({
@@ -187,38 +137,33 @@ const page = ref({
 });
 const handleSizeChange = (val: number) => {
   page.value.pageSize = val;
-  getDeliveryList();
+  getAreaList();
 };
 const handleCurrentChange = (val: number) => {
   page.value.pageNum = val;
-  getDeliveryList();
+  getAreaList();
 };
-const getDeliveryList = () => {
+const getAreaList = () => {
   Axios({
-    url: import.meta.env.VITE_BASE_URL + "/cms/findDeliveryByPage",
-    params: { ...page.value, ...filters },
+    url: import.meta.env.VITE_BASE_URL + "/cms/findAreaByPage",
+    params: page.value,
   }).then((res) => {
     tableData.value = res.data.records;
     page.value.total = res.data.total;
   });
 };
-interface Delivery {
-  deliveryId: string;
-  deliveryName: string;
+interface Area {
+  areaId: string;
   areaName: string;
 }
-const delivery = ref<Delivery>({
-  deliveryId: "",
-  deliveryName: "",
+const area = ref<Area>({
+  areaId: "",
   areaName: "",
 });
-const deliveryForm = ref<FormInstance>();
+const areaForm = ref<FormInstance>();
 //规则校验
-const rules = reactive<FormRules<Delivery>>({
-  deliveryName: [
-    { required: true, message: "请输入配送点名称", trigger: "blur" },
-  ],
-  areaName: [{ required: true, message: "请选择配送范围", trigger: "change" }],
+const rules = reactive<FormRules<Area>>({
+  areaName: [{ required: true, message: "请输入配送点名称", trigger: "blur" }],
 });
 //监听选择
 const handleSelectionChange = (val: any) => {
@@ -227,12 +172,12 @@ const handleSelectionChange = (val: any) => {
 };
 const isEdit = ref(false);
 //新增
-const addDelivery = () => {
+const addArea = () => {
   isEdit.value = true;
   isChange.value = false;
-  delivery.value = {
-    deliveryId: "",
-    deliveryName: "",
+  area.value = {
+    areaId: "",
+    areaName: "",
   };
 };
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -241,15 +186,15 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       if (isChange.value) {
         Axios({
-          url: import.meta.env.VITE_BASE_URL + "/cms/updateDelivery",
+          url: import.meta.env.VITE_BASE_URL + "/cms/updateArea",
           method: "POST",
-          data: delivery.value,
+          data: area.value,
         }).then((res) => {
           if (res.data.code == 200) {
             isEdit.value = false;
             isChange.value = false;
             ElMessage.success("保存成功");
-            getDeliveryList();
+            getAreaList();
           } else {
             ElMessage.error(res.data.msg);
           }
@@ -257,14 +202,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         return;
       }
       Axios({
-        url: import.meta.env.VITE_BASE_URL + "/cms/saveDelivery",
+        url: import.meta.env.VITE_BASE_URL + "/cms/saveArea",
         method: "POST",
-        data: delivery.value,
+        data: area.value,
       }).then((res) => {
         if (res.data.code == 200) {
           isEdit.value = false;
           ElMessage.success("保存成功");
-          getDeliveryList();
+          getAreaList();
         } else {
           ElMessage.error(res.data.msg);
         }
@@ -278,7 +223,7 @@ const isChange = ref(false);
 const handleEdit = (row: any) => {
   console.log("handleEdit", row);
   isEdit.value = true;
-  delivery.value = row;
+  area.value = row;
   isChange.value = true;
 };
 const handleBatchDelete = () => {
@@ -292,20 +237,24 @@ const handleBatchDelete = () => {
 const handleDelete = (row: any) => {
   row = row instanceof Array ? row : [row];
   Axios({
-    url: import.meta.env.VITE_BASE_URL + "/cms/delDeliveryById",
+    url: import.meta.env.VITE_BASE_URL + "/cms/delAreaById",
     method: "POST",
     data: row,
-  })
-    .then((res) => {
-      console.log("🚀 ~ handleDelete ~ res:", res);
-      if (res.data.code === 200) {
-        ElMessage.success("删除成功");
-        getDeliveryList();
-      }
-    })
-    .catch((err) => {
-      console.log("🚀 ~ handleDelete ~ err:", err);
-    });
+  }).then((res) => {
+    console.log("🚀 ~ handleDelete ~ res:", res);
+    if (res.data.code == 200) {
+      ElMessage.success("删除成功");
+      getAreaList();
+    }
+    if (res.data.code === -1) {
+      let str = "";
+      res.data.data.forEach((item: any) => {
+        str += item + ",";
+      });
+      str = str.substring(0, str.length - 1);
+      ElMessage.error(`删除失败区域:${str}存在配送点`);
+    }
+  });
 };
 </script>
 <style lang="scss" scoped></style>
