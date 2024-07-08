@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2023-08-22 02:20:24
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-09 16:49:16
+ * @LastEditTime: 2024-07-08 09:50:03
  * @filePath: Do not edit
 -->
 
@@ -15,26 +15,52 @@
       :router="true"
       @select="handleSelect"
     >
+      <div class="menu-title" :class="{ close: !isCollapse }">
+        <div class="title" v-if="!isCollapse">xx管理后台</div>
+        <div class="switch" @click="isCollapse = !isCollapse">
+          <img
+            v-if="!isCollapse"
+            class="icon"
+            src="../assets/icon/menu/menu-close.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="icon"
+            src="../assets/icon/menu/menu-open.png"
+            alt=""
+          />
+        </div>
+      </div>
       <div v-for="item in aside" :key="item.path">
         <el-menu-item :index="item.path" v-if="item.child.length == 0">
           <el-icon size="24px">
             <component :is="item.icon"></component>
           </el-icon>
+          <template #title>
+            <span v-if="!isCollapse">
+              {{ item.title }}
+            </span>
 
-          {{ item.title }}
+            <span v-else>{{ item.title }}</span>
+          </template>
         </el-menu-item>
         <el-sub-menu :index="item.path" v-else>
           <template #title>
             <el-icon size="24px">
               <component :is="item.icon"></component>
             </el-icon>
-            {{ item.title }}</template
-          >
+            <span v-if="!isCollapse">
+              {{ item.title }}
+            </span>
+          </template>
           <el-menu-item :index="e.path" v-for="e in item.child">
             <el-icon size="24px">
               <component :is="e.icon"></component>
             </el-icon>
-            {{ e.title }}
+            <span>
+              {{ e.title }}
+            </span>
           </el-menu-item>
         </el-sub-menu>
       </div>
@@ -49,7 +75,7 @@ import { useMainStore } from "@/stores/index";
 import { storeToRefs } from "pinia";
 const store = useMainStore();
 const { path } = storeToRefs(store);
-const isCollapse = ref(false);
+const isCollapse = ref(true);
 const handleSelect = (index: any) => {
   store.setPath(index);
 };
@@ -65,5 +91,27 @@ const handleSelect = (index: any) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .menu-title {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 10px;
+    .title {
+      width: 80%;
+    }
+    .switch {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      .icon {
+        width: 24px;
+      }
+    }
+    .close {
+      flex-direction: column;
+    }
+  }
 }
 </style>
