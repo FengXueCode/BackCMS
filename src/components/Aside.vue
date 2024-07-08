@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2023-08-22 02:20:24
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 14:26:48
+ * @LastEditTime: 2024-07-08 16:44:02
  * @filePath: Do not edit
 -->
 
@@ -16,7 +16,7 @@
       @select="handleSelect"
     >
       <div class="menu-title" :class="{ close: !isCollapse }">
-        <div class="title" v-if="!isCollapse">xx管理后台</div>
+        <div class="title" v-if="!isCollapse">三维模型管理系统</div>
         <div class="switch" @click="isCollapse = !isCollapse">
           <img
             v-if="!isCollapse"

@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-07-08 14:58:35
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 15:40:14
+ * @LastEditTime: 2024-07-08 16:55:02
  * @filePath: Do not edit
 -->
 <template>
@@ -30,7 +30,7 @@
     <div class="init-main">
       <el-table
         :data="tableData"
-        style="width: 100%"
+        height="80vh"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
@@ -41,21 +41,28 @@
         </el-table-column>
 
         <el-table-column
-          prop="questionBankName"
-          label="题库名称"
+          prop=""
+          label="模型提供方"
           width="auto"
         ></el-table-column>
-
-        <el-table-column prop="" width="300">
+        <el-table-column
+          prop=""
+          label="模型文件类型"
+          width="auto"
+        ></el-table-column>
+        <el-table-column
+          prop=""
+          label="介绍说明"
+          width="auto"
+        ></el-table-column>
+        <el-table-column
+          prop=""
+          label="场景分类"
+          width="auto"
+        ></el-table-column>
+        <el-table-column prop="" label="操作" width="auto">
           <template #default="scope">
             <div class="group">
-              <el-button
-                type="primary"
-                size="mini"
-                @click="handleEdit(scope.row)"
-                >编辑</el-button
-              >
-
               <el-popconfirm
                 :title="'是否确认删除?'"
                 confirmButtonText="确认"

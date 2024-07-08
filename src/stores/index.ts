@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 09:26:49
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 15:46:56
+ * @LastEditTime: 2024-07-08 17:03:17
  * @filePath: Do not edit
  */
 import { defineStore } from "pinia";
@@ -35,10 +35,7 @@ export const useMainStore = defineStore("main", () => {
     })
 
   }
-  //持久化
-  persist: {
-    enabled: true
-  }
+
   return {
     userName,
     path,
@@ -47,4 +44,12 @@ export const useMainStore = defineStore("main", () => {
     addTab,
     removeTab
   }
-})
+},
+  {
+    //持久化
+    persist: {
+      enabled: true
+    }
+  }
+
+)

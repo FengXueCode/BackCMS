@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 15:04:48
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 16:16:09
+ * @LastEditTime: 2024-07-08 17:14:40
  * @filePath: Do not edit
 -->
 <template>
@@ -17,7 +17,7 @@
       <section class="content">
         <div class="main-container">
           <el-tabs
-            v-model="activeTab"
+            v-model="path"
             type="card"
             closable
             @tabClick="changeTab"
@@ -40,8 +40,7 @@
 
 <script setup lang="ts">
 const store = useMainStore();
-const { tabList } = storeToRefs(store);
-const activeTab = ref(tabList.value[0].path);
+const { tabList, path } = storeToRefs(store);
 // 切换tab
 const router = useRouter();
 const changeTab = (tab: any) => {
@@ -63,7 +62,6 @@ const removeTab = (tab: any) => {
 watch(
   () => router.currentRoute.value.path,
   (newVal, oldVal) => {
-    console.log("🚀 ~ newVal:", newVal);
     if (newVal !== oldVal) {
       activeTab.value = newVal;
     }
