@@ -2,11 +2,11 @@
  * @Author: FengXue
  * @Date: 2023-08-15 10:42:23
  * @LastEditors: FengXue
- * @LastEditTime: 2024-04-09 11:28:56
+ * @LastEditTime: 2024-07-08 16:20:08
  * @filePath: Do not edit
 -->
 <template>
-  <el-menu class="head" mode="horizontal" :ellipsis="false">
+  <el-menu class="head" mode="horizontal" router :ellipsis="false">
     <el-menu-item :index="nav.logo.path">
       <img class="logo" :src="nav.logo.img" alt=" logo" />
     </el-menu-item>

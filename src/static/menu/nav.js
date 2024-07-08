@@ -1,3 +1,10 @@
+/*
+ * @Author: FengXue
+ * @Date: 2024-07-08 08:59:44
+ * @LastEditors: FengXue
+ * @LastEditTime: 2024-07-08 16:20:42
+ * @filePath: Do not edit
+ */
 
 import { createPinia } from "pinia";
 import { useMainStore } from "@/stores/index";
@@ -8,7 +15,7 @@ const { userName } = storeToRefs(store);
 const nav = {
   logo: {
     img: "",
-    path: "/"
+    path: "/index/index"
   },
   url: [
     {
