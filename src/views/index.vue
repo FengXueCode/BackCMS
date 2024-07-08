@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 15:04:48
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 17:21:58
+ * @LastEditTime: 2024-07-08 17:29:07
  * @filePath: Do not edit
 -->
 <template>
@@ -50,14 +50,18 @@ const changeTab = (tab: any) => {
 };
 //删除tab
 const removeTab = (tab: any) => {
+  let index = tabList.value.findIndex((item: any) => item.path === tab);
   store.removeTab(tab);
   if (tabList.value.length === 0) {
     store.addTab({
       title: "欢迎",
       path: "/index/index",
     });
-    router.push("/");
+    router.push("/index/index");
+    return;
   }
+  store.setPath(tabList.value[index - 1].path);
+  router.push(tabList.value[index - 1].path);
 };
 //监听路由变化切换tab
 watch(
