@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2023-08-22 02:20:24
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 09:50:03
+ * @LastEditTime: 2024-07-08 14:26:48
  * @filePath: Do not edit
 -->
 
@@ -78,6 +78,8 @@ const { path } = storeToRefs(store);
 const isCollapse = ref(true);
 const handleSelect = (index: any) => {
   store.setPath(index);
+  let tab = aside.find((e) => e.path == index);
+  store.addTab(tab);
 };
 </script>
 
@@ -87,10 +89,13 @@ const handleSelect = (index: any) => {
   height: 100vh;
   overflow-y: auto;
 }
+
 .aside {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
   .menu-title {
     height: 60px;
     display: flex;
