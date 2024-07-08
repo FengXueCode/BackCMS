@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 15:04:48
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 17:14:40
+ * @LastEditTime: 2024-07-08 17:16:41
  * @filePath: Do not edit
 -->
 <template>
@@ -63,7 +63,7 @@ watch(
   () => router.currentRoute.value.path,
   (newVal, oldVal) => {
     if (newVal !== oldVal) {
-      activeTab.value = newVal;
+      path.value = newVal;
     }
   }
 );
