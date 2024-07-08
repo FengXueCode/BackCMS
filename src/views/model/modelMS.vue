@@ -2,15 +2,13 @@
  * @Author: FengXue
  * @Date: 2024-07-08 14:58:35
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 16:55:02
+ * @LastEditTime: 2024-07-08 17:19:14
  * @filePath: Do not edit
 -->
 <template>
   <div class="init">
     <div class="function-nav">
-      <el-button type="primary" icon="el-icon-plus" @click="add"
-        >新增</el-button
-      >
+      <el-button type="primary" icon="plus" @click="add">新增</el-button>
       <el-popconfirm
         :title="'是否确认删除' + checkList.length + '项数据?'"
         confirmButtonText="确认"
@@ -125,6 +123,12 @@ const handleSizeChange = (val: number) => {
 const handleCurrentChange = (val: number) => {
   page.value.pageNum = val;
   getQuestionList();
+};
+//--------------------------<新增>----------------------------
+
+const router = useRouter();
+const add = () => {
+  router.push("/index/addModel");
 };
 </script>
 <style lang="scss" scoped></style>

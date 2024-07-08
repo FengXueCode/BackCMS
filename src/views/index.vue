@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 15:04:48
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 17:16:41
+ * @LastEditTime: 2024-07-08 17:21:58
  * @filePath: Do not edit
 -->
 <template>
@@ -29,9 +29,10 @@
               :label="item.title"
               :name="item.path"
             >
-              <router-view></router-view>
             </el-tab-pane>
           </el-tabs>
+
+          <router-view></router-view>
         </div>
       </section>
     </section>
