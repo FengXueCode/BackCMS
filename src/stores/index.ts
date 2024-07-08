@@ -2,7 +2,7 @@
  * @Author: FengXue
  * @Date: 2024-04-09 09:26:49
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 14:37:29
+ * @LastEditTime: 2024-07-08 15:46:56
  * @filePath: Do not edit
  */
 import { defineStore } from "pinia";
@@ -18,7 +18,7 @@ export const useMainStore = defineStore("main", () => {
   const tabList = ref([
     {
       title: "欢迎",
-      path: "/"
+      path: "/index/index"
     }
   ])
   function addTab(val: any) {
