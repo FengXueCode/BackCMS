@@ -2,34 +2,19 @@
  * @Author: FengXue
  * @Date: 2023-08-22 02:20:24
  * @LastEditors: FengXue
- * @LastEditTime: 2024-07-08 16:44:02
+ * @LastEditTime: 2024-08-09 13:39:42
  * @filePath: Do not edit
 -->
 
 <template>
   <div class="aside">
-    <el-menu
-      :default-active="path"
-      class="el-menu-vertical-demo"
-      :collapse="isCollapse"
-      :router="true"
-      @select="handleSelect"
-    >
+    <el-menu :default-active="path" class="el-menu-vertical-demo" :collapse="isCollapse" :router="true"
+      @select="handleSelect">
       <div class="menu-title" :class="{ close: !isCollapse }">
-        <div class="title" v-if="!isCollapse">三维模型管理系统</div>
+        <div class="title" v-if="!isCollapse">校园助手管理系统</div>
         <div class="switch" @click="isCollapse = !isCollapse">
-          <img
-            v-if="!isCollapse"
-            class="icon"
-            src="../assets/icon/menu/menu-close.png"
-            alt=""
-          />
-          <img
-            v-else
-            class="icon"
-            src="../assets/icon/menu/menu-open.png"
-            alt=""
-          />
+          <img v-if="!isCollapse" class="icon" src="../assets/icon/menu/menu-close.png" alt="" />
+          <img v-else class="icon" src="../assets/icon/menu/menu-open.png" alt="" />
         </div>
       </div>
       <div v-for="item in aside" :key="item.path">
@@ -78,7 +63,25 @@ const { path } = storeToRefs(store);
 const isCollapse = ref(true);
 const handleSelect = (index: any) => {
   store.setPath(index);
-  let tab = aside.find((e) => e.path == index);
+  let tab;
+  try {
+    aside.forEach(element => {
+      if (element.path == index) {
+        tab = element
+        throw new Error("已找到")
+      }
+      if (element.child.length != 0) {
+        element.child.forEach(item => {
+          if (item.path == index) {
+            tab = item
+            throw new Error("已找到子路由")
+          }
+        })
+      }
+    })
+  } catch (e) {
+  }
+
   store.addTab(tab);
 };
 </script>
@@ -96,6 +99,7 @@ const handleSelect = (index: any) => {
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
+
   .menu-title {
     height: 60px;
     display: flex;
@@ -103,17 +107,21 @@ const handleSelect = (index: any) => {
     justify-content: space-between;
     box-sizing: border-box;
     padding: 10px;
+
     .title {
       width: 80%;
     }
+
     .switch {
       flex-grow: 1;
       display: flex;
       justify-content: center;
+
       .icon {
         width: 24px;
       }
     }
+
     .close {
       flex-direction: column;
     }

@@ -7,9 +7,9 @@
 -->
 <template>
   <el-menu class="head" mode="horizontal" router :ellipsis="false">
-    <el-menu-item :index="nav.logo.path">
-      <img class="logo" :src="nav.logo.img" alt=" logo" />
-    </el-menu-item>
+    <!-- <el-menu-item :index="nav.logo.path"> -->
+    <!--   <img class="logo" :src="nav.logo.img" alt=" logo" /> -->
+    <!-- </el-menu-item> -->
     <div class="flex-grow" />
     <div v-for="item in nav.url" :key="item.path">
       <el-menu-item :index="item.path" v-if="item.child.length == 0">

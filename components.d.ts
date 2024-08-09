@@ -28,8 +28,6 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
-    ElTags: typeof import('element-plus/es')['ElTags']
-    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Nav: typeof import('./src/components/Nav.vue')['default']
     RichText: typeof import('./src/components/RichText.vue')['default']
