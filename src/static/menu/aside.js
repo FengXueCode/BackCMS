@@ -13,13 +13,6 @@ const aside = [
     child: []
   },
 
-  {
-    title: '模型管理',
-    path: '/index/model',
-    icon: 'PictureFilled',
-    child: [
-    ]
-  },
 
 ]
 

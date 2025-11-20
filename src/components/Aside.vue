@@ -16,7 +16,7 @@
       @select="handleSelect"
     >
       <div class="menu-title" :class="{ close: !isCollapse }">
-        <div class="title" v-if="!isCollapse">三维模型管理系统</div>
+        <div class="title" v-if="!isCollapse">瓦の战术板</div>
         <div class="switch" @click="isCollapse = !isCollapse">
           <img
             v-if="!isCollapse"

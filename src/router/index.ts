@@ -28,15 +28,8 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/welcome/index.vue'),
                 children: [
                 ]
-            },
-            {
-                path: '/index/model',
-                component: () => import('@/views/model/modelMS.vue'),
-            },
-            {
-                path: '/index/addModel',
-                component: () => import('@/views/model/addModel.vue'),
             }
+           
         ]
     }
 ]
